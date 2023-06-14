@@ -43,7 +43,7 @@ class GameViewController: UIViewController {
         let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
         
         // animate the 3d object
-        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
+//        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
         
         // retrieve the SCNView
         let scnView = self.view as! SCNView
@@ -70,35 +70,18 @@ class GameViewController: UIViewController {
         // retrieve the SCNView
         let scnView = self.view as! SCNView
         
-        // check what nodes are tapped
+        // create dot
+        let geo = SCNSphere(radius: CGFloat(0.1))
+        geo.firstMaterial?.diffuse.contents = UIColor.red
+        let dotNode = SCNNode(geometry: geo)
+        
         let p = gestureRecognize.location(in: scnView)
-        let hitResults = scnView.hitTest(p, options: [:])
-        // check that we clicked on at least one object
-        if hitResults.count > 0 {
-            // retrieved the first clicked object
-            let result = hitResults[0]
-            
-            // get its material
-            let material = result.node.geometry!.firstMaterial!
-            
-            // highlight it
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.5
-            
-            // on completion - unhighlight
-            SCNTransaction.completionBlock = {
-                SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
-                
-                material.emission.contents = UIColor.black
-                
-                SCNTransaction.commit()
-            }
-            
-            material.emission.contents = UIColor.red
-            
-            SCNTransaction.commit()
-        }
+        let uP = scnView.unprojectPoint(SCNVector3(p.x, p.y, 5))
+        // HERE - how to set position for the dot ?
+        dotNode.position = SCNVector3(uP.x, uP.y, 5)
+        
+        scnView.scene?.rootNode.addChildNode(dotNode)
+        
     }
     
     override var prefersStatusBarHidden: Bool {
