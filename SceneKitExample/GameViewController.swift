@@ -20,10 +20,14 @@ class GameViewController: UIViewController {
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
+        cameraNode.simdPosition = simd_float3(0, 0, 1)
+        cameraNode.camera?.usesOrthographicProjection = true
         scene.rootNode.addChildNode(cameraNode)
         
+        
+        
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+//        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -71,14 +75,14 @@ class GameViewController: UIViewController {
         let scnView = self.view as! SCNView
         
         // create dot
-        let geo = SCNSphere(radius: CGFloat(0.1))
+        let geo = SCNSphere(radius: CGFloat(0.01))
         geo.firstMaterial?.diffuse.contents = UIColor.red
         let dotNode = SCNNode(geometry: geo)
         
         let p = gestureRecognize.location(in: scnView)
-        let uP = scnView.unprojectPoint(SCNVector3(p.x, p.y, 5))
+        let uP = scnView.unprojectPoint(.init(p.x, p.y, 0.0))
         // HERE - how to set position for the dot ?
-        dotNode.position = SCNVector3(uP.x, uP.y, 5)
+        dotNode.position = SCNVector3(uP.x, uP.y, -0.02)
         
         scnView.scene?.rootNode.addChildNode(dotNode)
         
