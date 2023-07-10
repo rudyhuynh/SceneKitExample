@@ -40,34 +40,12 @@ class GameViewController: UIViewController {
         // retrieve the ship node
         let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
         
-        let html = """
-        <html>
-        <body>
-        <p style="color: blue;font-size: 50px">This is blue!</p>
-        </body>
-        </html>
-        """
-        
-        let data = Data(html.utf8)
+        // HERE - Wrapped text is overlapped !!!
         let content = "This is an example of a very super extra long text."
-        let scnText = SCNText(string: "", extrusionDepth: 0.2)
-        let paragraphStyle1 = NSMutableParagraphStyle()
-        paragraphStyle1.alignment = .center
-        paragraphStyle1.lineHeightMultiple = 5
-        paragraphStyle1.lineBreakMode = .byWordWrapping
-        let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor : UIColor.black,
-            .font: UIFont(name: "Helvetica", size: 0.5) as Any,
-            .paragraphStyle: paragraphStyle1
-        ]
-        
-//        scnText.string = try! NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-        
-        scnText.string = NSAttributedString(string: content, attributes: attributes)
-        
-        //        scnText.font = UIFont (name: "Helvetica", size: 0.4)
+        let scnText = SCNText(string: content, extrusionDepth: 0.2)
+        scnText.font = UIFont (name: "Helvetica", size: 0.4)
         scnText.alignmentMode = CATextLayerAlignmentMode.center.rawValue
-//        scnText.isWrapped = true
+        scnText.isWrapped = true
         let size = CGSize(width: 4, height: 6)
         scnText.containerFrame = CGRect(origin: scnText.containerFrame.origin, size: size)
         let scnTextNode = SCNNode(geometry: scnText)
@@ -89,21 +67,6 @@ class GameViewController: UIViewController {
         // configure the view
         scnView.backgroundColor = UIColor.black
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 300))
-        let paragraphStyle2 = NSMutableParagraphStyle()
-        paragraphStyle2.alignment = .left
-        paragraphStyle2.lineHeightMultiple = 5
-        paragraphStyle2.lineBreakMode = .byWordWrapping
-        let attributesUILabel: [NSAttributedString.Key: Any] = [
-            .foregroundColor : UIColor.black,
-            .font: UIFont(name: "Helvetica", size: 12) as Any,
-            .paragraphStyle: paragraphStyle2
-        ]
-        label.numberOfLines = 0
-        label.layer.borderColor = UIColor.darkGray.cgColor
-        label.layer.borderWidth = 3.0
-        label.attributedText = NSAttributedString(string: content, attributes: attributesUILabel)
-        self.view.addSubview(label)
         
     }
     
